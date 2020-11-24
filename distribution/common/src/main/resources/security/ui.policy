@@ -1,0 +1,5 @@
+priority "grant";
+
+grant codeBase "file:/org.apache.felix.fileinstall" {
+  permission java.io.FilePermission "${ddf.home.perm}wrap:mvn:org.checkerframework${/}-", "read";
+}
