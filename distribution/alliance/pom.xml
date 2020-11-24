@@ -258,37 +258,57 @@
                 <version>1.5.3</version>
                 <executions>
                     <execution>
+                        <id>replace-system-properties</id>
                         <phase>generate-resources</phase>
                         <goals>
                             <goal>replace</goal>
                         </goals>
+                        <configuration>
+                            <file>
+                                ${project.basedir}/target/dependencies/ddf-kernel-${ddf.version}/etc/custom.system.properties
+                            </file>
+                            <regex>true</regex>
+                            <replacements>
+                                <replacement>
+                                    <token>org.codice.ddf.system.branding=.*</token>
+                                    <value>org.codice.ddf.system.branding=${branding-lowercase}</value>
+                                </replacement>
+                                <replacement>
+                                    <token>org.codice.ddf.system.siteName=.*</token>
+                                    <value>org.codice.ddf.system.siteName=${sitename.default}</value>
+                                </replacement>
+                                <replacement>
+                                    <token>org.codice.ddf.system.version=.*</token>
+                                    <value>org.codice.ddf.system.version=${project.version}</value>
+                                </replacement>
+                                <replacement>
+                                    <token>org.codice.ddf.system.organization=.*</token>
+                                    <value>org.codice.ddf.system.organization=${project.organization.name}
+                                    </value>
+                                </replacement>
+                            </replacements>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>replace-security-policy</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                        <configuration>
+                            <file>
+                                ${project.basedir}/target/dependencies/ddf-kernel-${ddf.version}/security/configurations.policy
+                            </file>
+                            <regex>true</regex>
+                            <replacements>
+                                <replacement>
+                                    <token>grant codeBase "file:/catalog-core-directorymonitor.*</token>
+                                    <value>grant codeBase "file:/catalog-core-directorymonitor/org.apache.camel.camel-core/org.apache.camel.camel-blueprint/catalog-core-camelcomponent/catalog-core-urlresourcereader/com.google.guava/catalog-core-standardframework/org.apache.tika.core/platform-util" {</value>
+                                </replacement>
+                            </replacements>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <file>
-                        ${project.basedir}/target/dependencies/ddf-kernel-${ddf.version}/etc/custom.system.properties
-                    </file>
-                    <regex>true</regex>
-                    <replacements>
-                        <replacement>
-                            <token>org.codice.ddf.system.branding=.*</token>
-                            <value>org.codice.ddf.system.branding=${branding-lowercase}</value>
-                        </replacement>
-                        <replacement>
-                            <token>org.codice.ddf.system.siteName=.*</token>
-                            <value>org.codice.ddf.system.siteName=${sitename.default}</value>
-                        </replacement>
-                        <replacement>
-                            <token>org.codice.ddf.system.version=.*</token>
-                            <value>org.codice.ddf.system.version=${project.version}</value>
-                        </replacement>
-                        <replacement>
-                            <token>org.codice.ddf.system.organization=.*</token>
-                            <value>org.codice.ddf.system.organization=${project.organization.name}
-                            </value>
-                        </replacement>
-                    </replacements>
-                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
